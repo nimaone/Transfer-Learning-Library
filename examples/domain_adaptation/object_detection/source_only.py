@@ -127,9 +127,9 @@ def main(args):
     cfg = utils.setup(args)
 
     # dataset
-    args.source = utils.build_dataset(args.source[::2], args.source[1::2])
-    args.target = utils.build_dataset(args.target[::2], args.target[1::2])
-    args.test = utils.build_dataset(args.test[::2], args.test[1::2])
+#     args.source = utils.build_dataset(args.source[::2], args.source[1::2])
+#     args.target = utils.build_dataset(args.target[::2], args.target[1::2])
+#     args.test = utils.build_dataset(args.test[::2], args.test[1::2])
 
     # create model
     model = models.__dict__[cfg.MODEL.META_ARCHITECTURE](cfg, finetune=args.finetune)
