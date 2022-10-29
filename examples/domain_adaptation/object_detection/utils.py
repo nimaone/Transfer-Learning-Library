@@ -15,7 +15,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as T
 import detectron2.utils.comm as comm
-from detectron2.evaluation import PascalVOCDetectionEvaluator, inference_on_dataset
+from detectron2.evaluation import PascalVOCDetectionEvaluator, inference_on_dataset, CocoEvaluator
 from detectron2.evaluation.pascal_voc_evaluation import voc_eval
 from detectron2.config import get_cfg, CfgNode
 from detectron2.engine import default_setup
@@ -99,7 +99,8 @@ def validate(model, logger, cfg, args):
     results = OrderedDict()
     for dataset_name in args.test:
         data_loader = build_detection_test_loader(cfg, dataset_name)
-        evaluator = PascalVOCDetectionPerClassEvaluator(dataset_name)
+#         evaluator = PascalVOCDetectionPerClassEvaluator(dataset_name)
+        evaluator = CocoEvaluator(dataset_name)
         results_i = inference_on_dataset(model, data_loader, evaluator)
         results[dataset_name] = results_i
         if comm.is_main_process():
