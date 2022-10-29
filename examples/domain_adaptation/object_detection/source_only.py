@@ -24,6 +24,14 @@ sys.path.append('../../..')
 import tllib.vision.models.object_detection.meta_arch as models
 
 import utils
+from detectron2.data.datasets import register_coco_instances,load_coco_json
+
+register_coco_instances("dataset_train_synthetic", {}, "/content/DataGen_all_slice_4k_only_car_coco.json", "/content/datasets/DataGen_all_slice_4k_only_car")
+#register_coco_instances("dataset_train_synthetic", {}, "/content/all_slice_vsait_4k_only_car_coco.json", "/content/datasets/all_slice_vsait_4k_only_car")
+register_coco_instances("dataset_train_real", {}, "/content/datasets/VisDrone2019-DET-train/train_only_car.json", "/content/datasets/VisDrone2019-DET-train/images")
+
+register_coco_instances("dataset_test_real", {}, "/content/datasets/VisDrone2019-DET-val/val_only_car.json", "/content/datasets/VisDrone2019-DET-val/images")
+
 
 
 def train(model, logger, cfg, args):
