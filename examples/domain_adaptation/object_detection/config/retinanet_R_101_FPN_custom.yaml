@@ -18,12 +18,6 @@ MODEL:
   FPN:
     IN_FEATURES: ["res3", "res4", "res5"]
 INPUT:
- CROP:
-    ENABLED: False
-    SIZE: [0.9, 0.9]
-    TYPE: relative_range
-  FORMAT: BGR
-  MASK_FORMAT: polygon
   MAX_SIZE_TEST: 1333
   MAX_SIZE_TRAIN: 1333
   MIN_SIZE_TEST: 800
