@@ -34,7 +34,13 @@ import utils
 
 import category_adaptation
 import bbox_adaptation
+from detectron2.data.datasets import register_coco_instances,load_coco_json
 
+register_coco_instances("dataset_train_synthetic", {}, "/content/DataGen_all_slice_4k_only_car_coco.json", "/content/datasets/DataGen_all_slice_4k_only_car")
+#register_coco_instances("dataset_train_synthetic", {}, "/content/all_slice_vsait_4k_only_car_coco.json", "/content/datasets/all_slice_vsait_4k_only_car")
+register_coco_instances("dataset_train_real", {}, "/content/datasets/VisDrone2019-DET-train/train_only_car.json", "/content/datasets/VisDrone2019-DET-train/images")
+
+register_coco_instances("dataset_test_real", {}, "/content/datasets/VisDrone2019-DET-val/val_only_car.json", "/content/datasets/VisDrone2019-DET-val/images")
 
 def generate_proposals(model, num_classes, dataset_names, cache_root, cfg):
     """Generate foreground proposals and background proposals from `model` and save them to the disk"""
@@ -128,7 +134,8 @@ def train(model, logger, cfg, args, args_cls, args_box):
     writers = default_writers(cfg.OUTPUT_DIR, max_iter) if comm.is_main_process() else []
 
     # generate proposals from detector
-    classes = MetadataCatalog.get(args.targets[0]).thing_classes
+#     classes = MetadataCatalog.get(args.targets[0]).thing_classes
+    classes = ["car"]
     cache_proposal_root = os.path.join(cfg.OUTPUT_DIR, "cache", "proposal")
     prop_t_fg, prop_t_bg = generate_proposals(model, len(classes), args.targets, cache_proposal_root, cfg)
     prop_s_fg, prop_s_bg = generate_proposals(model, len(classes), args.sources, cache_proposal_root, cfg)
@@ -253,9 +260,9 @@ def main(args, args_cls, args_box):
     cfg = utils.setup(args)
 
     # dataset
-    args.sources = utils.build_dataset(args.sources[::2], args.sources[1::2])
-    args.targets = utils.build_dataset(args.targets[::2], args.targets[1::2])
-    args.test = utils.build_dataset(args.test[::2], args.test[1::2])
+#     args.sources = utils.build_dataset(args.sources[::2], args.sources[1::2])
+#     args.targets = utils.build_dataset(args.targets[::2], args.targets[1::2])
+#     args.test = utils.build_dataset(args.test[::2], args.test[1::2])
 
     # create model
     model = models.__dict__[cfg.MODEL.META_ARCHITECTURE](cfg, finetune=args.finetune)
@@ -328,7 +335,7 @@ if __name__ == "__main__":
              "https://pytorch.org/docs/stable/distributed.html for details.",
     )
     parser.add_argument(
-        "opts",
+        "--opts",
         help="Modify config options by adding 'KEY VALUE' pairs at the end of the command. "
              "See config references at "
              "https://detectron2.readthedocs.io/modules/config.html#config-references",
