@@ -100,7 +100,7 @@ def validate(model, logger, cfg, args):
     for dataset_name in args.test:
         data_loader = build_detection_test_loader(cfg, dataset_name)
 #         evaluator = PascalVOCDetectionPerClassEvaluator(dataset_name)
-        evaluator = CocoEvaluator(dataset_name)
+        evaluator = COCOEvaluator(dataset_name)
         results_i = inference_on_dataset(model, data_loader, evaluator)
         results[dataset_name] = results_i
         if comm.is_main_process():
